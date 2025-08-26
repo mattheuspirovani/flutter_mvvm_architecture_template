@@ -19,10 +19,14 @@ class UserViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    _user = await userRepository.getUser();
-
-    _isLoading = false;
-    notifyListeners();
+    try {
+      _user = await userRepository.getUser();
+    } catch (_) {
+      _user = null;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   Future<void> refreshUser() => _loadUser();
